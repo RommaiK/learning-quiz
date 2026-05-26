@@ -3,69 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DNA การเรียนรู้ของคุณคือสัตว์ชนิดไหน?</title>
-<link href="https://fonts.googleapis.com/css2?family=Pridi:wght@400;500&display=swap" rel="stylesheet">
+<title>ถอดรหัส Learning DNA</title>
+<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pridi', serif; }
-  body { background: #fdfaf7; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
-  .qwrap, .rwrap { width: 100%; max-width: 560px; }
-  .title-block { text-align: center; margin-bottom: 2rem; }
-  .title-main { font-size: 24px; font-weight: 500; color: #5a5a5a; line-height: 1.6; }
-  .title-sub { font-size: 14px; color: #bbb; margin-top: 6px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Itim', cursive; color: #411900; }
+  body { min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; background: #fdfaf7; }
+  .page { width: 100%; max-width: 560px; }
+
+  /* COVER */
+  .cover-img { width: 100%; border-radius: 16px; display: block; margin-bottom: 1.25rem; }
+  .cover-desc { font-size: 15px; line-height: 1.85; color: #411900; text-align: center; margin-bottom: 1.5rem; }
+
+  /* BANNER */
+  .banner-img { width: 100%; display: block; margin-bottom: 1.5rem; border-radius: 12px; }
+
+  /* PROGRESS */
   .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
   .progress-bar { flex: 1; height: 6px; background: #ede8e3; border-radius: 3px; }
   .progress-fill { height: 100%; background: #ABDEE6; border-radius: 3px; transition: width 0.3s ease; }
-  .progress-label { font-size: 13px; color: #bbb; white-space: nowrap; }
-  .q-text { font-size: 18px; color: #5a5a5a; margin-bottom: 1.25rem; line-height: 1.8; }
+  .progress-label { font-size: 13px; color: #411900; white-space: nowrap; }
+
+  /* QUESTION */
+  .q-text { font-size: 18px; color: #411900; margin-bottom: 1.25rem; line-height: 1.8; }
   .choices { display: flex; flex-direction: column; gap: 10px; }
-  .choice-btn { background: #fff; border: 1.5px solid #ede8e3; border-radius: 14px; padding: 14px 18px; text-align: left; cursor: pointer; font-family: 'Pridi', serif; font-size: 15px; color: #5a5a5a; transition: border-color 0.15s, background 0.15s; line-height: 1.7; }
+  .choice-btn { background: #fff; border: 1.5px solid #ede8e3; border-radius: 14px; padding: 14px 18px; text-align: left; cursor: pointer; font-family: 'Itim', cursive; font-size: 15px; color: #411900; transition: border-color 0.15s, background 0.15s; line-height: 1.7; }
   .choice-btn:hover { background: #fdf8f5; border-color: #ABDEE6; }
-  .choice-btn.selected { border: 2px solid #ABDEE6; background: #f0f9fb; color: #3a7a85; }
-  .nav-row { display: flex; justify-content: flex-end; margin-top: 1.5rem; }
-  .next-btn { background: #ABDEE6; color: #fff; border: none; border-radius: 20px; padding: 11px 30px; font-family: 'Pridi', serif; font-size: 15px; cursor: pointer; opacity: 0.4; pointer-events: none; transition: opacity 0.2s, background 0.2s; }
-  .next-btn.active { opacity: 1; pointer-events: auto; }
-  .next-btn.active:hover { background: #8ecfda; }
-  .rwrap { text-align: center; }
-  .r-label { font-size: 13px; color: #bbb; margin-bottom: 0.5rem; }
-  .r-img { width: 180px; height: 180px; object-fit: contain; margin: 0 auto 1rem; display: block; border-radius: 50%; background: #fdf8f5; padding: 14px; }
-  .r-name { font-size: 26px; font-weight: 500; color: #5a5a5a; margin-bottom: 4px; }
-  .r-eng { font-size: 14px; color: #ABDEE6; margin-bottom: 1.25rem; }
-  .r-desc { font-size: 15px; color: #777; line-height: 1.85; margin-bottom: 1.25rem; text-align: left; background: #fdf8f5; border-radius: 14px; padding: 1rem 1.25rem; }
-  .r-traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.75rem; }
-  .trait { font-size: 13px; padding: 5px 16px; border-radius: 20px; font-family: 'Pridi', serif; }
-  .trait-blue { background: #e8f6f9; color: #3a7a85; }
-  .trait-pink { background: #fde8ef; color: #a05070; }
-  .trait-beige { background: #f5ede4; color: #8a6a50; }
-  .retry-btn { background: transparent; border: 1.5px solid #ede8e3; border-radius: 20px; padding: 11px 30px; font-family: 'Pridi', serif; font-size: 15px; cursor: pointer; color: #aaa; transition: background 0.15s; }
-  .retry-btn:hover { background: #fdf8f5; }
+  .choice-btn.selected { border: 2px solid #ABDEE6; background: #f0f9fb; }
+
+  /* NAV BUTTONS */
+  .nav-row { display: flex; justify-content: space-between; margin-top: 1.5rem; gap: 10px; }
+  .back-btn { background: transparent; border: 1.5px solid #ede8e3; border-radius: 20px; padding: 11px 24px; font-family: 'Itim', cursive; font-size: 15px; cursor: pointer; color: #411900; transition: background 0.15s; }
+  .back-btn:hover { background: #f5ede4; }
+  .back-btn:disabled { opacity: 0.3; cursor: default; }
+  .next-btn, .start-btn { background: #ABDEE6; color: #FFFFFF; border: none; border-radius: 20px; padding: 11px 30px; font-family: 'Itim', cursive; font-size: 15px; cursor: pointer; opacity: 0.4; pointer-events: none; transition: opacity 0.2s, background 0.2s; }
+  .next-btn.active, .start-btn { opacity: 1; pointer-events: auto; }
+  .next-btn.active:hover, .start-btn:hover { background: #8ecfda; }
+  .start-btn { opacity: 1; pointer-events: auto; display: block; margin: 0 auto; padding: 13px 40px; font-size: 17px; }
+
+  /* RESULT */
+  .result-page { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; transition: background 0.3s; }
+  .result-inner { width: 100%; max-width: 560px; text-align: center; }
+  .r-label { font-size: 13px; color: #411900; margin-bottom: 0.5rem; opacity: 0.7; }
+  .r-img { width: 300px; height: 300px; object-fit: contain; margin: 0 auto 1rem; display: block; border-radius: 50%; padding: 14px; }
+  .r-name { font-size: 26px; font-weight: 500; color: #411900; margin-bottom: 4px; }
+  .r-eng { font-size: 15px; color: #411900; margin-bottom: 1.25rem; opacity: 0.75; }
+  .r-desc { font-size: 15px; color: #411900; line-height: 1.85; margin-bottom: 1.25rem; text-align: left; background: rgba(255,255,255,0.55); border-radius: 14px; padding: 1rem 1.25rem; }
+  .r-traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.5rem; }
+  .trait { font-size: 13px; padding: 5px 16px; border-radius: 20px; background: rgba(255,255,255,0.7); color: #411900; }
+  .result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .retry-btn { background: transparent; border: 1.5px solid #411900; border-radius: 20px; padding: 11px 28px; font-family: 'Itim', cursive; font-size: 15px; cursor: pointer; color: #411900; transition: background 0.15s; }
+  .retry-btn:hover { background: rgba(255,255,255,0.4); }
+  .save-btn { background: #ABDEE6; color: #FFFFFF; border: none; border-radius: 20px; padding: 11px 28px; font-family: 'Itim', cursive; font-size: 15px; cursor: pointer; transition: background 0.2s; }
+  .save-btn:hover { background: #8ecfda; }
 </style>
 </head>
 <body>
 
-<div class="qwrap" id="quiz-section">
-  <div class="title-block">
-    <p class="title-main">DNA การเรียนรู้ของคุณ<br>คือสัตว์ชนิดไหน?</p>
-    <p class="title-sub">ตอบให้ตรงใจที่สุดนะคะ ไม่มีผิดไม่มีถูก</p>
-  </div>
+<!-- COVER PAGE -->
+<div class="page" id="cover-section">
+  <img class="cover-img" src="Cover.png" alt="cover">
+  <p class="cover-desc">
+    แบบทดสอบ DNA การเรียนรู้ของตัวคุณ<br>
+    ที่จะพาไปค้นหาว่า คุณมี DNA การเรียนรู้เหมือนสัตว์ชนิดไหน<br>
+    ทำมาให้เล่นกันสนุก ๆ ตอบได้เลยไม่มีผิด ไม่มีถูกนะคะ ☺️<br><br>
+    โดย ทีม Learning and Development, TED
+  </p>
+  <button class="start-btn" onclick="startQuiz()">เริ่มเล่น</button>
+</div>
+
+<!-- QUIZ PAGE -->
+<div class="page" id="quiz-section" style="display:none">
+  <img class="banner-img" src="Banner.png" alt="banner">
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
     <span class="progress-label" id="q-num">1 / 7</span>
   </div>
   <p class="q-text" id="q-text"></p>
   <div class="choices" id="choices"></div>
-  <div class="nav-row"><button class="next-btn" id="next-btn">ถัดไป</button></div>
+  <div class="nav-row">
+    <button class="back-btn" id="back-btn" onclick="goBack()">← ย้อนกลับ</button>
+    <button class="next-btn" id="next-btn">ถัดไป</button>
+  </div>
 </div>
 
-<div class="rwrap" id="result-section" style="display:none">
-  <p class="r-label">DNA การเรียนรู้ของคุณคือ</p>
-  <img class="r-img" id="r-img" src="" alt="">
-  <p class="r-name" id="r-name"></p>
-  <p class="r-eng" id="r-eng"></p>
-  <div class="r-desc" id="r-desc"></div>
-  <div class="r-traits" id="r-traits"></div>
-  <button class="retry-btn" onclick="restart()">ลองใหม่อีกครั้ง</button>
+<!-- RESULT PAGE -->
+<div class="result-page" id="result-section" style="display:none">
+  <div class="result-inner" id="result-capture">
+    <p class="r-label">DNA การเรียนรู้ของคุณคือ</p>
+    <img class="r-img" id="r-img" src="" alt="">
+    <p class="r-name" id="r-name"></p>
+    <p class="r-eng" id="r-eng"></p>
+    <div class="r-desc" id="r-desc"></div>
+    <div class="r-traits" id="r-traits"></div>
+  </div>
+  <div class="result-btns" style="margin-top:1rem">
+    <button class="retry-btn" onclick="restart()">ลองใหม่อีกครั้ง</button>
+    <button class="save-btn" onclick="saveImage()">💾 เซฟรูปผลลัพธ์</button>
+  </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 const questions = [
   { text: "เวลาได้รับ tool หรือ software ใหม่ สิ่งแรกที่คุณทำคืออะไร?", choices: [
@@ -114,32 +151,46 @@ const questions = [
 
 const results = {
   otter: {
+    bg: "#F0D6EA",
     img: "https://RommaiK.github.io/learning-quiz/Otter.png",
-    name: "นักเรียนรู้สายลงมือทำ", eng: "The Otter — Learning by Doing",
-    desc: "คุณเรียนรู้ได้ดีที่สุดเมื่อได้ลงมือทำจริง ไม่กลัวผิดพลาด และมองความล้มเหลวเป็นส่วนหนึ่งของ process ยิ่งได้ experiment มากเท่าไหร่ คุณยิ่ง grow เร็วเท่านั้น",
-    traits: [{text:"Hands-on",cls:"trait-blue"},{text:"Adaptive",cls:"trait-pink"},{text:"Action-oriented",cls:"trait-beige"},{text:"ไม่กลัวลองผิดลองถูก",cls:"trait-blue"}]
+    name: "🦦 The Otter",
+    eng: "นักลงมือทำผู้กล้า... ยิ่งลองยิ่งเก่ง!",
+    desc: "DNA ของคุณคือสายลุยตัวจริง! การเรียนรู้ของคุณไม่ใช่แค่การอ่านตำรา แต่คือการได้ลงมือหยิบจับและทำจริงให้เห็นกับตา คุณไม่เคยกังวลเลยถ้าจะทำผิดพลาด เพราะสำหรับคุณแล้ว ความผิดพลาดก็แค่บทเรียนสนุกๆ ที่ทำให้คุณเติบโตขึ้นไปอีกขั้น ยิ่งได้ลองผิดลองถูกมากเท่าไหร่ คุณก็ยิ่งฉายแววความเก่งออกมาได้ชัดเจนเท่านั้น... ลุยเลย! เพราะทุกประสบการณ์ที่คุณสร้างขึ้น คือก้าวที่สำคัญที่สุดในการพัฒนาตัวเองครับ",
+    traits: ["Hands-on", "Adaptive", "Action-oriented", "ไม่กลัวลองผิดลองถูก"]
   },
   tiger: {
+    bg: "#F7E6CA",
     img: "https://RommaiK.github.io/learning-quiz/Tiger.png",
-    name: "นักเรียนรู้สาย Self-directed", eng: "The Tiger — Independent Learner",
-    desc: "คุณเป็นคนที่ drive การเรียนรู้ของตัวเองได้ดีมาก ชอบค้นหาข้อมูล อ่านเพิ่ม และไม่รอให้ใครมาสอน สิ่งที่คุณเรียนรู้มักลึกและมีคุณภาพสูง เพราะเป็นสิ่งที่คุณเลือกเอง",
-    traits: [{text:"Self-motivated",cls:"trait-beige"},{text:"Curious",cls:"trait-blue"},{text:"Deep learner",cls:"trait-pink"},{text:"Independent",cls:"trait-beige"}]
+    name: "🐅 The Tiger",
+    eng: "นักเรียนรู้สายลุยเดี่ยว... ผู้ครองอาณาจักรแห่งความรู้!",
+    desc: "DNA ของคุณคือความเท่ที่มาพร้อมกับพลัง! คุณเป็นคนที่มีไฟในการเรียนรู้แบบสุดๆ ไม่ต้องรอให้ใครมาบอกหรือรอใครมาสอน เพราะคุณนี่แหละคือคนที่ขับเคลื่อนการพัฒนาตัวเองได้ดีที่สุด คุณชอบเจาะลึกในสิ่งที่สนใจ จนกลายเป็นผู้เชี่ยวชาญในแบบฉบับของตัวเองได้เสมอ สิ่งที่เรียนรู้ด้วยมือคุณเองมักจะเป็นความรู้ที่แน่นและทรงพลังที่สุด... สานต่อไฟในตัวคุณต่อไปนะครับ เพราะโลกแห่งการเรียนรู้นี้ คุณคือคนที่กำหนดทิศทางเองได้ดีที่สุดเลย!",
+    traits: ["Self-motivated", "Curious", "Deep learner", "Independent"]
   },
   owl: {
+    bg: "#F0EAD6",
     img: "https://RommaiK.github.io/learning-quiz/Owl.png",
-    name: "นักเรียนรู้สายนักคิด", eng: "The Owl — Reflective Learner",
-    desc: "คุณต้องการเข้าใจ \"ทำไม\" ก่อนลงมือทำ ชอบวิเคราะห์ เชื่อมโยง และมองภาพรวม การเรียนรู้ของคุณอาจช้ากว่าคนอื่นในตอนแรก แต่มักฝังแน่นและนำไปใช้ได้อย่างมีประสิทธิภาพกว่า",
-    traits: [{text:"Analytical",cls:"trait-pink"},{text:"Systematic",cls:"trait-beige"},{text:"Big picture thinker",cls:"trait-blue"},{text:"Reflective",cls:"trait-pink"}]
+    name: "🦉 The Owl",
+    eng: "นักคิดผู้รอบรู้... มองลึกถึงแก่น เข้าใจชัดถึงเหตุผล!",
+    desc: "DNA ของคุณคือความลุ่มลึกที่น่าชื่นชมครับ! ก่อนที่จะเริ่มลงมือทำอะไร คุณมักจะมองหาคำตอบว่า 'ทำไม' เสมอ คุณเป็นนักเชื่อมโยงไอเดียที่มองภาพรวมได้ขาด และชอบใช้เวลาตกผลึกความคิดให้คมชัดที่สุด แม้การเรียนรู้ของคุณจะค่อยเป็นค่อยไป แต่เชื่อเถอะว่าทุกอย่างที่คุณได้รับมาจะฝังลึกและนำไปปรับใช้ได้แม่นยำกว่าใคร... เพราะความเข้าใจที่แท้จริงต้องใช้เวลา คุณคือคนประเภทที่ 'ช้าแต่ชัวร์' และผลลัพธ์ที่คุณทำมักจะออกมางดงามเสมอครับ!",
+    traits: ["Analytical", "Systematic", "Big picture thinker", "Reflective"]
   },
   dolphin: {
+    bg: "#D6F0EA",
     img: "https://RommaiK.github.io/learning-quiz/dophin.png",
-    name: "นักเรียนรู้สาย Social", eng: "The Dolphin — Social Learner",
-    desc: "คุณเรียนรู้ได้ดีที่สุดเมื่ออยู่กับคนอื่น ไม่ว่าจะเป็นการ discuss แลกเปลี่ยนไอเดีย หรือสอนคนอื่น ทีมที่ดีคือแหล่งพลังงานของคุณ และคุณมักเป็นตัวเชื่อมที่ทำให้ความรู้แพร่กระจายในองค์กร",
-    traits: [{text:"Collaborative",cls:"trait-pink"},{text:"Communicative",cls:"trait-blue"},{text:"Empathetic",cls:"trait-beige"},{text:"Team player",cls:"trait-pink"}]
+    name: "🐬 The Dolphin",
+    eng: "เพื่อนซี้สายความรู้... ยิ่งแชร์ยิ่งปัง!",
+    desc: "DNA ของคุณคือ 'Social Learner' ตัวตึง! โลกการเรียนรู้ของคุณจะเหงาไม่ได้ ถ้าได้นั่งล้อมวงคุยงานหรือระดมไอเดียกับคุณปุ๊บ คือไอเดียบรรเจิดปั๊บ คุณเป็นเหมือนกาวใจที่ทำให้ทีมสนุกกับการเรียนรู้ ถ้าจะให้คุณเก่งขึ้นอีกนิด ก็แค่ลุยโปรเจกต์กลุ่มให้บ่อยขึ้น แล้วคุณจะพบว่าพลังของทีมมันเหนือชั้นแค่ไหน!",
+    traits: ["Collaborative", "Communicative", "Empathetic", "Team player"]
   }
 };
 
 let current = 0, answers = [], selected = null;
+
+function startQuiz() {
+  document.getElementById("cover-section").style.display = "none";
+  document.getElementById("quiz-section").style.display = "block";
+  render();
+}
 
 function render() {
   const q = questions[current];
@@ -148,28 +199,35 @@ function render() {
   document.getElementById("progress").style.width = `${(current / questions.length) * 100}%`;
   const choicesEl = document.getElementById("choices");
   choicesEl.innerHTML = "";
-  selected = null;
-  document.getElementById("next-btn").classList.remove("active");
+  selected = answers[current] || null;
+  const backBtn = document.getElementById("back-btn");
+  backBtn.disabled = current === 0;
+  const nextBtn = document.getElementById("next-btn");
+  nextBtn.classList.toggle("active", selected !== null);
   q.choices.forEach(c => {
     const btn = document.createElement("button");
-    btn.className = "choice-btn";
+    btn.className = "choice-btn" + (c.animal === selected ? " selected" : "");
     btn.textContent = c.text;
     btn.onclick = () => {
       document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
       selected = c.animal;
-      document.getElementById("next-btn").classList.add("active");
+      answers[current] = selected;
+      nextBtn.classList.add("active");
     };
     choicesEl.appendChild(btn);
   });
-  const nb = document.getElementById("next-btn");
-  nb.textContent = current === questions.length - 1 ? "ดูผลลัพธ์" : "ถัดไป";
-  nb.onclick = () => {
+  nextBtn.textContent = current === questions.length - 1 ? "ดูผลลัพธ์" : "ถัดไป";
+  nextBtn.onclick = () => {
     if (!selected) return;
-    answers.push(selected);
+    answers[current] = selected;
     if (current < questions.length - 1) { current++; render(); }
     else showResult();
   };
+}
+
+function goBack() {
+  if (current > 0) { current--; render(); }
 }
 
 function showResult() {
@@ -178,7 +236,9 @@ function showResult() {
   const winner = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
   const r = results[winner];
   document.getElementById("quiz-section").style.display = "none";
-  document.getElementById("result-section").style.display = "block";
+  const rs = document.getElementById("result-section");
+  rs.style.display = "flex";
+  rs.style.background = r.bg;
   document.getElementById("r-img").src = r.img;
   document.getElementById("r-img").alt = r.name;
   document.getElementById("r-name").textContent = r.name;
@@ -188,8 +248,8 @@ function showResult() {
   traitsEl.innerHTML = "";
   r.traits.forEach(t => {
     const span = document.createElement("span");
-    span.className = `trait ${t.cls}`;
-    span.textContent = t.text;
+    span.className = "trait";
+    span.textContent = t;
     traitsEl.appendChild(span);
   });
 }
@@ -197,11 +257,19 @@ function showResult() {
 function restart() {
   current = 0; answers = []; selected = null;
   document.getElementById("result-section").style.display = "none";
-  document.getElementById("quiz-section").style.display = "block";
-  render();
+  document.getElementById("cover-section").style.display = "block";
+  document.body.style.background = "#fdfaf7";
 }
 
-render();
+function saveImage() {
+  const el = document.getElementById("result-capture");
+  html2canvas(el, { backgroundColor: document.getElementById("result-section").style.background, scale: 2 }).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "my-learning-dna.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
 </script>
 </body>
 </html>
