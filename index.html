@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNA การเรียนรู้ของคุณคือสัตว์ชนิดไหน?</title>
+<link href="https://fonts.googleapis.com/css2?family=Pridi:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pridi', serif; }
+  body { background: #fdfaf7; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
+  .qwrap, .rwrap { width: 100%; max-width: 560px; }
+  .title-block { text-align: center; margin-bottom: 2rem; }
+  .title-main { font-size: 24px; font-weight: 500; color: #5a5a5a; line-height: 1.6; }
+  .title-sub { font-size: 14px; color: #bbb; margin-top: 6px; }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
+  .progress-bar { flex: 1; height: 6px; background: #ede8e3; border-radius: 3px; }
+  .progress-fill { height: 100%; background: #ABDEE6; border-radius: 3px; transition: width 0.3s ease; }
+  .progress-label { font-size: 13px; color: #bbb; white-space: nowrap; }
+  .q-text { font-size: 18px; color: #5a5a5a; margin-bottom: 1.25rem; line-height: 1.8; }
+  .choices { display: flex; flex-direction: column; gap: 10px; }
+  .choice-btn { background: #fff; border: 1.5px solid #ede8e3; border-radius: 14px; padding: 14px 18px; text-align: left; cursor: pointer; font-family: 'Pridi', serif; font-size: 15px; color: #5a5a5a; transition: border-color 0.15s, background 0.15s; line-height: 1.7; }
+  .choice-btn:hover { background: #fdf8f5; border-color: #ABDEE6; }
+  .choice-btn.selected { border: 2px solid #ABDEE6; background: #f0f9fb; color: #3a7a85; }
+  .nav-row { display: flex; justify-content: flex-end; margin-top: 1.5rem; }
+  .next-btn { background: #ABDEE6; color: #fff; border: none; border-radius: 20px; padding: 11px 30px; font-family: 'Pridi', serif; font-size: 15px; cursor: pointer; opacity: 0.4; pointer-events: none; transition: opacity 0.2s, background 0.2s; }
+  .next-btn.active { opacity: 1; pointer-events: auto; }
+  .next-btn.active:hover { background: #8ecfda; }
+  .rwrap { text-align: center; }
+  .r-label { font-size: 13px; color: #bbb; margin-bottom: 0.5rem; }
+  .r-img { width: 180px; height: 180px; object-fit: contain; margin: 0 auto 1rem; display: block; border-radius: 50%; background: #fdf8f5; padding: 14px; }
+  .r-name { font-size: 26px; font-weight: 500; color: #5a5a5a; margin-bottom: 4px; }
+  .r-eng { font-size: 14px; color: #ABDEE6; margin-bottom: 1.25rem; }
+  .r-desc { font-size: 15px; color: #777; line-height: 1.85; margin-bottom: 1.25rem; text-align: left; background: #fdf8f5; border-radius: 14px; padding: 1rem 1.25rem; }
+  .r-traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 1.75rem; }
+  .trait { font-size: 13px; padding: 5px 16px; border-radius: 20px; font-family: 'Pridi', serif; }
+  .trait-blue { background: #e8f6f9; color: #3a7a85; }
+  .trait-pink { background: #fde8ef; color: #a05070; }
+  .trait-beige { background: #f5ede4; color: #8a6a50; }
+  .retry-btn { background: transparent; border: 1.5px solid #ede8e3; border-radius: 20px; padding: 11px 30px; font-family: 'Pridi', serif; font-size: 15px; cursor: pointer; color: #aaa; transition: background 0.15s; }
+  .retry-btn:hover { background: #fdf8f5; }
+</style>
+</head>
+<body>
+
+<div class="qwrap" id="quiz-section">
+  <div class="title-block">
+    <p class="title-main">DNA การเรียนรู้ของคุณ<br>คือสัตว์ชนิดไหน?</p>
+    <p class="title-sub">ตอบให้ตรงใจที่สุดนะคะ ไม่มีผิดไม่มีถูก</p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress" style="width:0%"></div></div>
+    <span class="progress-label" id="q-num">1 / 7</span>
+  </div>
+  <p class="q-text" id="q-text"></p>
+  <div class="choices" id="choices"></div>
+  <div class="nav-row"><button class="next-btn" id="next-btn">ถัดไป</button></div>
+</div>
+
+<div class="rwrap" id="result-section" style="display:none">
+  <p class="r-label">DNA การเรียนรู้ของคุณคือ</p>
+  <img class="r-img" id="r-img" src="" alt="">
+  <p class="r-name" id="r-name"></p>
+  <p class="r-eng" id="r-eng"></p>
+  <div class="r-desc" id="r-desc"></div>
+  <div class="r-traits" id="r-traits"></div>
+  <button class="retry-btn" onclick="restart()">ลองใหม่อีกครั้ง</button>
+</div>
+
+<script>
+const questions = [
+  { text: "เวลาได้รับ tool หรือ software ใหม่ สิ่งแรกที่คุณทำคืออะไร?", choices: [
+    { text: "เปิดใช้งานเลย เจอปัญหาค่อยหาทางแก้", animal: "otter" },
+    { text: "หา tutorial หรืออ่าน documentation ก่อน", animal: "tiger" },
+    { text: "นั่งคิดก่อนว่าจะใช้มันทำอะไรได้บ้าง", animal: "owl" },
+    { text: "ถามเพื่อนร่วมงานที่เคยใช้มาก่อน", animal: "dolphin" }
+  ]},
+  { text: "เวลาติดปัญหาในงาน คุณมักจะ…", choices: [
+    { text: "ลองทำหลายๆ วิธีจน breakthrough", animal: "otter" },
+    { text: "ค้นหาข้อมูลเองจนเจอคำตอบ", animal: "tiger" },
+    { text: "ถอยออกมาคิด big picture ก่อน", animal: "owl" },
+    { text: "ระดมสมองกับทีม", animal: "dolphin" }
+  ]},
+  { text: "Training format ไหนที่คุณ engage ที่สุด?", choices: [
+    { text: "Workshop ที่ได้ลงมือทำ hands-on", animal: "otter" },
+    { text: "Online course ที่เรียนได้ตามเวลาตัวเอง", animal: "tiger" },
+    { text: "Case study ที่ได้วิเคราะห์เชิงลึก", animal: "owl" },
+    { text: "Group discussion หรือ role play", animal: "dolphin" }
+  ]},
+  { text: "คุณรู้สึกว่าตัวเองเรียนรู้ได้ดีที่สุดเมื่อ…", choices: [
+    { text: "ได้ทดลองทำจริงๆ แม้จะพลาดบ้าง", animal: "otter" },
+    { text: "ได้อ่านหรือดูคนเดียวอย่างตั้งใจ", animal: "tiger" },
+    { text: "ได้เชื่อมโยงกับสิ่งที่รู้อยู่แล้ว", animal: "owl" },
+    { text: "ได้อธิบายหรือสอนคนอื่น", animal: "dolphin" }
+  ]},
+  { text: "หลัง training จบ คุณมักจะทำอะไร?", choices: [
+    { text: "นำไปใช้กับงานจริงทันที", animal: "otter" },
+    { text: "หาอ่านเพิ่มเติมในหัวข้อที่สนใจ", animal: "tiger" },
+    { text: "สรุปหรือจดบันทึกไว้ให้ตัวเอง", animal: "owl" },
+    { text: "แชร์ให้เพื่อนร่วมทีมฟัง", animal: "dolphin" }
+  ]},
+  { text: "เวลาได้รับ feedback คุณรู้สึกอย่างไร?", choices: [
+    { text: "อยากรีบปรับและลองใหม่เลย", animal: "otter" },
+    { text: "เอาไปคิดและหาข้อมูลเพิ่มเอง", animal: "tiger" },
+    { text: "วิเคราะห์ว่า feedback นั้น valid แค่ไหน", animal: "owl" },
+    { text: "คุยกับคนอื่นเพื่อขอมุมมองเพิ่ม", animal: "dolphin" }
+  ]},
+  { text: "ถ้าต้องเรียนรู้หัวข้อใหม่ใน 1 สัปดาห์ คุณจะวางแผนยังไง?", choices: [
+    { text: "เริ่มทำ project เล็กๆ ไปพร้อมกับเรียน", animal: "otter" },
+    { text: "กำหนดเวลาอ่านและทบทวนเองทุกวัน", animal: "tiger" },
+    { text: "วางโครงก่อนว่าจะ cover อะไรบ้าง", animal: "owl" },
+    { text: "หาคนที่รู้เรื่องนี้มาคุยด้วย", animal: "dolphin" }
+  ]}
+];
+
+const results = {
+  otter: {
+    img: "https://RommaiK.github.io/learning-quiz/Otter.png",
+    name: "นักเรียนรู้สายลงมือทำ", eng: "The Otter — Learning by Doing",
+    desc: "คุณเรียนรู้ได้ดีที่สุดเมื่อได้ลงมือทำจริง ไม่กลัวผิดพลาด และมองความล้มเหลวเป็นส่วนหนึ่งของ process ยิ่งได้ experiment มากเท่าไหร่ คุณยิ่ง grow เร็วเท่านั้น",
+    traits: [{text:"Hands-on",cls:"trait-blue"},{text:"Adaptive",cls:"trait-pink"},{text:"Action-oriented",cls:"trait-beige"},{text:"ไม่กลัวลองผิดลองถูก",cls:"trait-blue"}]
+  },
+  tiger: {
+    img: "https://RommaiK.github.io/learning-quiz/Tiger.png",
+    name: "นักเรียนรู้สาย Self-directed", eng: "The Tiger — Independent Learner",
+    desc: "คุณเป็นคนที่ drive การเรียนรู้ของตัวเองได้ดีมาก ชอบค้นหาข้อมูล อ่านเพิ่ม และไม่รอให้ใครมาสอน สิ่งที่คุณเรียนรู้มักลึกและมีคุณภาพสูง เพราะเป็นสิ่งที่คุณเลือกเอง",
+    traits: [{text:"Self-motivated",cls:"trait-beige"},{text:"Curious",cls:"trait-blue"},{text:"Deep learner",cls:"trait-pink"},{text:"Independent",cls:"trait-beige"}]
+  },
+  owl: {
+    img: "https://RommaiK.github.io/learning-quiz/Owl.png",
+    name: "นักเรียนรู้สายนักคิด", eng: "The Owl — Reflective Learner",
+    desc: "คุณต้องการเข้าใจ \"ทำไม\" ก่อนลงมือทำ ชอบวิเคราะห์ เชื่อมโยง และมองภาพรวม การเรียนรู้ของคุณอาจช้ากว่าคนอื่นในตอนแรก แต่มักฝังแน่นและนำไปใช้ได้อย่างมีประสิทธิภาพกว่า",
+    traits: [{text:"Analytical",cls:"trait-pink"},{text:"Systematic",cls:"trait-beige"},{text:"Big picture thinker",cls:"trait-blue"},{text:"Reflective",cls:"trait-pink"}]
+  },
+  dolphin: {
+    img: "https://RommaiK.github.io/learning-quiz/dophin.png",
+    name: "นักเรียนรู้สาย Social", eng: "The Dolphin — Social Learner",
+    desc: "คุณเรียนรู้ได้ดีที่สุดเมื่ออยู่กับคนอื่น ไม่ว่าจะเป็นการ discuss แลกเปลี่ยนไอเดีย หรือสอนคนอื่น ทีมที่ดีคือแหล่งพลังงานของคุณ และคุณมักเป็นตัวเชื่อมที่ทำให้ความรู้แพร่กระจายในองค์กร",
+    traits: [{text:"Collaborative",cls:"trait-pink"},{text:"Communicative",cls:"trait-blue"},{text:"Empathetic",cls:"trait-beige"},{text:"Team player",cls:"trait-pink"}]
+  }
+};
+
+let current = 0, answers = [], selected = null;
+
+function render() {
+  const q = questions[current];
+  document.getElementById("q-num").textContent = `${current + 1} / ${questions.length}`;
+  document.getElementById("q-text").textContent = q.text;
+  document.getElementById("progress").style.width = `${(current / questions.length) * 100}%`;
+  const choicesEl = document.getElementById("choices");
+  choicesEl.innerHTML = "";
+  selected = null;
+  document.getElementById("next-btn").classList.remove("active");
+  q.choices.forEach(c => {
+    const btn = document.createElement("button");
+    btn.className = "choice-btn";
+    btn.textContent = c.text;
+    btn.onclick = () => {
+      document.querySelectorAll(".choice-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selected = c.animal;
+      document.getElementById("next-btn").classList.add("active");
+    };
+    choicesEl.appendChild(btn);
+  });
+  const nb = document.getElementById("next-btn");
+  nb.textContent = current === questions.length - 1 ? "ดูผลลัพธ์" : "ถัดไป";
+  nb.onclick = () => {
+    if (!selected) return;
+    answers.push(selected);
+    if (current < questions.length - 1) { current++; render(); }
+    else showResult();
+  };
+}
+
+function showResult() {
+  const counts = { otter: 0, tiger: 0, owl: 0, dolphin: 0 };
+  answers.forEach(a => counts[a]++);
+  const winner = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+  const r = results[winner];
+  document.getElementById("quiz-section").style.display = "none";
+  document.getElementById("result-section").style.display = "block";
+  document.getElementById("r-img").src = r.img;
+  document.getElementById("r-img").alt = r.name;
+  document.getElementById("r-name").textContent = r.name;
+  document.getElementById("r-eng").textContent = r.eng;
+  document.getElementById("r-desc").textContent = r.desc;
+  const traitsEl = document.getElementById("r-traits");
+  traitsEl.innerHTML = "";
+  r.traits.forEach(t => {
+    const span = document.createElement("span");
+    span.className = `trait ${t.cls}`;
+    span.textContent = t.text;
+    traitsEl.appendChild(span);
+  });
+}
+
+function restart() {
+  current = 0; answers = []; selected = null;
+  document.getElementById("result-section").style.display = "none";
+  document.getElementById("quiz-section").style.display = "block";
+  render();
+}
+
+render();
+</script>
+</body>
+</html>
