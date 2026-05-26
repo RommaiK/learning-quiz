@@ -265,7 +265,15 @@ function restart() {
 
 function saveImage() {
   const el = document.getElementById("result-capture");
-  html2canvas(el, { backgroundColor: document.getElementById("result-section").style.background, scale: 2 }).then(canvas => {
+  const bg = document.getElementById("result-section").style.background;
+  html2canvas(el, {
+    backgroundColor: bg,
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    width: el.offsetWidth,
+    height: el.offsetHeight
+  }).then(canvas => {
     const link = document.createElement("a");
     link.download = "my-learning-dna.png";
     link.href = canvas.toDataURL();
