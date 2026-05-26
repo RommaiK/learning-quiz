@@ -263,31 +263,47 @@ function restart() {
   document.body.style.background = "#fdfaf7";
 }
 
-function saveImage() {
+function toBase64(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      canvas.getContext("2d").drawImage(img, 0, 0);
+      resolve(canvas.toDataURL("image/png"));
+    };
+    img.onerror = () => resolve(url);
+    img.src = url + "?t=" + Date.now();
+  });
+}
+
+async function saveImage() {
   const el = document.getElementById("result-capture");
   const bg = document.getElementById("result-section").style.background;
-  const img = document.getElementById("r-img");
-  
-  const doCapture = () => {
-    html2canvas(el, {
+  const imgEl = document.getElementById("r-img");
+  const originalSrc = imgEl.src;
+
+  try {
+    const base64 = await toBase64(originalSrc);
+    imgEl.src = base64;
+    await new Promise(r => setTimeout(r, 300));
+    const canvas = await html2canvas(el, {
       backgroundColor: bg,
       scale: 2,
-      useCORS: true,
+      useCORS: false,
       allowTaint: false,
-      imageTimeout: 0,
       logging: false
-    }).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "my-learning-dna.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
     });
-  };
-
-  if (img.complete && img.naturalWidth > 0) {
-    doCapture();
-  } else {
-    img.onload = doCapture;
+    imgEl.src = originalSrc;
+    const link = document.createElement("a");
+    link.download = "my-learning-dna.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch(e) {
+    imgEl.src = originalSrc;
+    console.error(e);
   }
 }
 </script>
