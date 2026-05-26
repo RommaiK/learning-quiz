@@ -9,27 +9,27 @@
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Itim', cursive; color: #411900; }
   body { min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; background: #fdfaf7; }
   .page { width: 100%; max-width: 560px; }
- 
+
   /* COVER */
   .cover-img { width: 100%; border-radius: 16px; display: block; margin-bottom: 1.25rem; }
   .cover-desc { font-size: 15px; line-height: 1.85; color: #411900; text-align: center; margin-bottom: 1.5rem; }
- 
+
   /* BANNER */
-  .banner-img { width: 100%; display: block; margin-bottom: 1.5rem; border-radius: 12px; }
- 
+  .banner-img { width: 100%; display: block; margin-bottom: 0.5rem; border-radius: 12px; }
+
   /* PROGRESS */
   .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 1.5rem; }
   .progress-bar { flex: 1; height: 6px; background: #ede8e3; border-radius: 3px; }
   .progress-fill { height: 100%; background: #ABDEE6; border-radius: 3px; transition: width 0.3s ease; }
   .progress-label { font-size: 13px; color: #411900; white-space: nowrap; }
- 
+
   /* QUESTION */
   .q-text { font-size: 18px; color: #411900; margin-bottom: 1.25rem; line-height: 1.8; }
   .choices { display: flex; flex-direction: column; gap: 10px; }
   .choice-btn { background: #fff; border: 1.5px solid #ede8e3; border-radius: 14px; padding: 14px 18px; text-align: left; cursor: pointer; font-family: 'Itim', cursive; font-size: 15px; color: #411900; transition: border-color 0.15s, background 0.15s; line-height: 1.7; }
   .choice-btn:hover { background: #fdf8f5; border-color: #ABDEE6; }
   .choice-btn.selected { border: 2px solid #ABDEE6; background: #f0f9fb; }
- 
+
   /* NAV BUTTONS */
   .nav-row { display: flex; justify-content: space-between; margin-top: 1.5rem; gap: 10px; }
   .back-btn { background: transparent; border: 1.5px solid #ede8e3; border-radius: 20px; padding: 11px 24px; font-family: 'Itim', cursive; font-size: 15px; cursor: pointer; color: #411900; transition: background 0.15s; }
@@ -39,12 +39,12 @@
   .next-btn.active, .start-btn { opacity: 1; pointer-events: auto; }
   .next-btn.active:hover, .start-btn:hover { background: #8ecfda; }
   .start-btn { opacity: 1; pointer-events: auto; display: block; margin: 0 auto; padding: 13px 40px; font-size: 17px; }
- 
+
   /* RESULT */
   .result-page { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; transition: background 0.3s; }
   .result-inner { width: 100%; max-width: 560px; text-align: center; }
   .r-label { font-size: 13px; color: #411900; margin-bottom: 0.5rem; opacity: 0.7; }
-  .r-img { width: 500px; height: 500px; object-fit: contain; margin: 0 auto 1rem; display: block; border-radius: 50%; padding: 14px; max-width: 100%; }
+  .r-img { width: 400px; height: 400px; object-fit: contain; margin: 0 auto 0.25rem; display: block; border-radius: 50%; padding: 4px; max-width: 100%; }
   .r-name { font-size: 26px; font-weight: 500; color: #411900; margin-bottom: 4px; }
   .r-eng { font-size: 15px; color: #411900; margin-bottom: 1.25rem; opacity: 0.75; }
   .r-desc { font-size: 15px; color: #411900; line-height: 1.85; margin-bottom: 1.25rem; text-align: left; background: rgba(255,255,255,0.55); border-radius: 14px; padding: 1rem 1.25rem; }
@@ -58,7 +58,7 @@
 </style>
 </head>
 <body>
- 
+
 <!-- COVER PAGE -->
 <div class="page" id="cover-section">
   <img class="cover-img" src="Cover.png" alt="cover">
@@ -70,7 +70,7 @@
   </p>
   <button class="start-btn" onclick="startQuiz()">เริ่มเล่น</button>
 </div>
- 
+
 <!-- QUIZ PAGE -->
 <div class="page" id="quiz-section" style="display:none">
   <img class="banner-img" src="Banner.png" alt="banner">
@@ -85,7 +85,7 @@
     <button class="next-btn" id="next-btn">ถัดไป</button>
   </div>
 </div>
- 
+
 <!-- RESULT PAGE -->
 <div class="result-page" id="result-section" style="display:none">
   <div class="result-inner" id="result-capture">
@@ -101,7 +101,7 @@
     <button class="save-btn" onclick="saveImage()">💾 เซฟรูปผลลัพธ์</button>
   </div>
 </div>
- 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 const questions = [
@@ -148,7 +148,7 @@ const questions = [
     { text: "หาคนที่รู้เรื่องนี้มาคุยด้วย", animal: "dolphin" }
   ]}
 ];
- 
+
 const results = {
   otter: {
     bg: "#FAF2FA",
@@ -183,15 +183,15 @@ const results = {
     traits: ["Collaborative", "Communicative", "Empathetic", "Team player"]
   }
 };
- 
+
 let current = 0, answers = [], selected = null;
- 
+
 function startQuiz() {
   document.getElementById("cover-section").style.display = "none";
   document.getElementById("quiz-section").style.display = "block";
   render();
 }
- 
+
 function render() {
   const q = questions[current];
   document.getElementById("q-num").textContent = `${current + 1} / ${questions.length}`;
@@ -225,11 +225,11 @@ function render() {
     else showResult();
   };
 }
- 
+
 function goBack() {
   if (current > 0) { current--; render(); }
 }
- 
+
 function showResult() {
   const counts = { otter: 0, tiger: 0, owl: 0, dolphin: 0 };
   answers.forEach(a => counts[a]++);
@@ -253,14 +253,14 @@ function showResult() {
     traitsEl.appendChild(span);
   });
 }
- 
+
 function restart() {
   current = 0; answers = []; selected = null;
   document.getElementById("result-section").style.display = "none";
   document.getElementById("cover-section").style.display = "block";
   document.body.style.background = "#fdfaf7";
 }
- 
+
 function saveImage() {
   const el = document.getElementById("result-capture");
   html2canvas(el, { backgroundColor: document.getElementById("result-section").style.background, scale: 2 }).then(canvas => {
