@@ -8,6 +8,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Itim', cursive; color: #411900; }
   body { min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; background: #fdfaf7; }
+  body.result-active { padding: 0; background: none; }
   .page { width: 100%; max-width: 560px; }
 
   /* COVER */
@@ -41,7 +42,7 @@
   .start-btn { opacity: 1; pointer-events: auto; display: block; margin: 0 auto; padding: 13px 40px; font-size: 17px; }
 
   /* RESULT */
-  .result-page { width: 100%; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; transition: background 0.3s; }
+  .result-page { width: 100%; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; transition: background 0.3s; box-sizing: border-box; }
   .result-inner { width: 100%; max-width: 560px; text-align: center; }
   .r-label { font-size: 13px; color: #411900; margin-bottom: 0.5rem; opacity: 0.7; }
   .r-img { width: auto; height: auto; max-width: 400px; max-height: 400px; object-fit: contain; margin: 0 auto 0.25rem; display: block; padding: 4px; }
@@ -241,6 +242,7 @@ function showResult() {
   const rs = document.getElementById("result-section");
   rs.style.display = "flex";
   rs.style.background = r.bg;
+  document.body.classList.add("result-active");
   document.getElementById("r-img").src = r.img;
   document.getElementById("r-img").alt = r.name;
   document.getElementById("r-name").textContent = r.name;
@@ -260,7 +262,7 @@ function restart() {
   current = 0; answers = []; selected = null;
   document.getElementById("result-section").style.display = "none";
   document.getElementById("cover-section").style.display = "block";
-  document.body.style.background = "#fdfaf7";
+  document.body.classList.remove("result-active");
 }
 
 function toBase64(url) {
