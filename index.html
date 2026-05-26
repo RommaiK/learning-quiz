@@ -44,7 +44,7 @@
   .result-page { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; transition: background 0.3s; }
   .result-inner { width: 100%; max-width: 560px; text-align: center; }
   .r-label { font-size: 13px; color: #411900; margin-bottom: 0.5rem; opacity: 0.7; }
-  .r-img { width: 400px; height: 400px; object-fit: contain; margin: 0 auto 0.25rem; display: block; border-radius: 50%; padding: 4px; max-width: 100%; }
+  .r-img { width: 400px; height: 400px; object-fit: contain; margin: 0 auto 0.25rem; display: block; padding: 4px; max-width: 100%; }
   .r-name { font-size: 26px; font-weight: 500; color: #411900; margin-bottom: 4px; }
   .r-eng { font-size: 15px; color: #411900; margin-bottom: 1.25rem; opacity: 0.75; }
   .r-desc { font-size: 15px; color: #411900; line-height: 1.85; margin-bottom: 1.25rem; text-align: left; background: rgba(255,255,255,0.55); border-radius: 14px; padding: 1rem 1.25rem; }
@@ -88,17 +88,19 @@
 
 <!-- RESULT PAGE -->
 <div class="result-page" id="result-section" style="display:none">
-  <div class="result-inner" id="result-capture">
-    <p class="r-label">DNA การเรียนรู้ของคุณคือ</p>
-    <img class="r-img" id="r-img" src="" alt="">
-    <p class="r-name" id="r-name"></p>
-    <p class="r-eng" id="r-eng"></p>
-    <div class="r-desc" id="r-desc"></div>
-    <div class="r-traits" id="r-traits"></div>
-  </div>
-  <div class="result-btns" style="margin-top:1rem">
-    <button class="retry-btn" onclick="restart()">ลองใหม่อีกครั้ง</button>
-    <button class="save-btn" onclick="saveImage()">💾 เซฟรูปผลลัพธ์</button>
+  <div class="result-inner">
+    <div id="result-capture">
+      <p class="r-label">DNA การเรียนรู้ของคุณคือ</p>
+      <img class="r-img" id="r-img" src="" alt="">
+      <p class="r-name" id="r-name"></p>
+      <p class="r-eng" id="r-eng"></p>
+      <div class="r-desc" id="r-desc"></div>
+      <div class="r-traits" id="r-traits"></div>
+    </div>
+    <div class="result-btns" style="margin-top:1.5rem; justify-content:center; display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="retry-btn" onclick="restart()">ลองใหม่อีกครั้ง</button>
+      <button class="save-btn" onclick="saveImage()">💾 เซฟรูปผลลัพธ์</button>
+    </div>
   </div>
 </div>
 
