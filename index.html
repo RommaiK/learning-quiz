@@ -257,8 +257,8 @@ function showResult() {
     traitsEl.appendChild(span);
   });
 
-  // Send result to Power Automate
-  fetch("https://default5db8bf0e85924ed082b2a6d4d77933.d4.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/947c1886c5544702a8ddfc41f48df7da/triggers/manual/paths/invoke?api-version=1", {
+  // Send result to Google Sheets
+  fetch("https://script.google.com/macros/s/AKfycbxc_9qQ2Vta0FilOnivV0ROBxYj0lgtYzUON3OjaZ_E-d3T5tMuQtnfiyc45jL4mSgk/exec", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
