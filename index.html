@@ -258,14 +258,12 @@ function showResult() {
   });
 
   // Send result to Google Sheets
-  fetch("https://script.google.com/macros/s/AKfycbxc_9qQ2Vta0FilOnivV0ROBxYj0lgtYzUON3OjaZ_E-d3T5tMuQtnfiyc45jL4mSgk/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      result: winner,
-      timestamp: new Date().toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })
-    })
-  }).catch(e => console.log("Log error:", e));
+  const params = new URLSearchParams({
+    result: winner,
+    timestamp: new Date().toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })
+  });
+  fetch("https://script.google.com/macros/s/AKfycbxZwKmszPxs55ne0e4fHgJKPtvmakIkJGRqqhgwEFJVECqJMEfLfMTeJ2aaX3rmkA/exec?" + params.toString())
+    .catch(e => console.log("Log error:", e));
 }
 
 function restart() {
